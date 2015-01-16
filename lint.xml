@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <issue id="SimpleDateFormat">
+        <ignore path="src/com/ucab/servimovil/PlanillaSalidaFragment.java" />
+        <ignore path="src/com/ucab/servimovil/SalidaFragment.java" />
+    </issue>
+</lint>

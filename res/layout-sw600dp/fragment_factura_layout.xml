@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+   android:id="@+id/registro_layout"
+      android:background="@drawable/fondo_app" 
+    android:tileMode="repeat"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp" >
+    
+    <TextView
+            android:id="@+id/textView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/new_toner_reg"
+            android:layout_marginTop="30dp"
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+    
+     <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="45dp" >
+
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/factura_label"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <EditText
+                android:id="@+id/facturaEditText"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="numberDecimal"
+                android:layout_marginRight="20dp" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/startRegisterButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/comenzar_button_text"
+            android:layout_marginTop="20dp"
+            android:gravity="center" />
+
+        <ListView
+            android:id="@+id/listToners"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:descendantFocusability="blocksDescendants" >
+        </ListView>
+
+         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" 
+            android:gravity="center"
+            android:layout_marginTop="20dp">
+	        <Button
+	            android:id="@+id/registerListButton"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/register_long" />
+        </LinearLayout>
+
+</LinearLayout>
+
+
+</RelativeLayout>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/linearLayoutContentSol" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/solution_question_label"
+        android:gravity="center"
+        android:layout_marginTop="30dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textStyle="normal|bold" />
+    
+     <RadioGroup android:id="@+id/solRadioGroup"
+             android:orientation="horizontal"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginTop="10dp" >
+			 
+			    <RadioButton android:id="@+id/radioSiSol"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			         android:text="@string/si_label" />
+			 
+			    <RadioButton android:id="@+id/radioNosol"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:text="@string/no_label" 
+                android:layout_marginLeft="15dp" />
+          </RadioGroup>
+          
+       <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content" 
+                android:layout_marginTop="5dp">
+          <TextView
+            android:id="@+id/recibidoTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/solution_label"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="normal|bold" />
+
+        <EditText
+            android:id="@+id/solucionText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textMultiLine"
+            android:textSize="13sp"
+            android:maxLength="150" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" 
+            android:gravity="center"
+            android:layout_marginTop="35dp">
+	        <Button
+	            android:id="@+id/registerSolButton"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/register_long" />
+        </LinearLayout>
+
+</LinearLayout>
