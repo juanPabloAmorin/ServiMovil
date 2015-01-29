@@ -54,6 +54,9 @@ public class EntregaTonerFragment extends Fragment {
 
     	super.onActivityCreated(state);
     	
+    	getActivity().getWindow().setSoftInputMode(
+			    WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
+			);
     	
     	localTransaction = new LocalTransaction();
     	

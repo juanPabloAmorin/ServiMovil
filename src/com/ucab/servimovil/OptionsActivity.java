@@ -38,6 +38,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewConfiguration;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 public class OptionsActivity extends FragmentActivity implements ActionBar.TabListener {
@@ -57,6 +58,11 @@ public class OptionsActivity extends FragmentActivity implements ActionBar.TabLi
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		getWindow().setSoftInputMode(
+			    WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
+			);
+		
 		setContentView(R.layout.activity_options);
 
 		getOverflowMenu();

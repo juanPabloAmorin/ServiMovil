@@ -38,6 +38,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.*;
 
 public class PlanillaSalidaFragment extends Fragment {
@@ -95,6 +96,10 @@ public class PlanillaSalidaFragment extends Fragment {
 	
 	public void onActivityCreated(Bundle state){
 		super.onActivityCreated(state);
+		
+		getActivity().getWindow().setSoftInputMode(
+			    WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
+			);
 		
 		carga = false;
 		envio = false;

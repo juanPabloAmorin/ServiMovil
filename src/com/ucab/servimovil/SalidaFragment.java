@@ -29,6 +29,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -48,6 +49,10 @@ public class SalidaFragment extends Fragment {
 
 	public void onActivityCreated(Bundle state){
 		super.onActivityCreated(state);
+		
+		getActivity().getWindow().setSoftInputMode(
+			    WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
+			);
 
 		listSolicitud = (ListView) getView().findViewById(R.id.listViewReportes);
 		

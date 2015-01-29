@@ -115,7 +115,7 @@ public class MainActivity extends Activity {
 	            		 if(ldapObject.getResult().equals("true")){
 
 	            			 //TODO temporal
-	            			 usuario = "erpena";
+	            			// usuario = "erpena";
 		    	
 	            			 try{
 						    	      httpclient = new DefaultHttpClient(httpParams);

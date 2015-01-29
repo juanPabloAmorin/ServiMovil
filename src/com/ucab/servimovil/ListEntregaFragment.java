@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -31,6 +32,10 @@ public class ListEntregaFragment extends Fragment  {
 	public void onActivityCreated(Bundle state){
 
     	super.onActivityCreated(state);
+
+    	getActivity().getWindow().setSoftInputMode(
+			    WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
+			);
     	
     	TextView title = (TextView) getView().findViewById(R.id.entregaTitle);
     	ListView listOpciones = (ListView) getView().findViewById(R.id.listEntrega);
