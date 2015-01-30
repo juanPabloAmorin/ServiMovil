@@ -95,7 +95,9 @@ public class OptionsActivity extends FragmentActivity implements ActionBar.TabLi
 			@Override
 			public void onPageScrollStateChanged(int arg0) {
 			}
-		});
+			
+			
+		}); 
 
 		tituloSec = getResources().getString(R.string.app_name);
 		actionBar.setTitle(tituloSec);
