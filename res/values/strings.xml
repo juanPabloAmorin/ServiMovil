@@ -17,7 +17,7 @@
     <string name="fecha_sol_label">Fecha Solicitud:</string>
     <string name="fecha_cambio_label">Fecha Cambio:</string>
     <string name="reporte_label">Reporte:</string>
-    <string name="modelo_imp_label">Modelo de Impresora:</string>
+    <string name="modelo_imp_label">Impresora:</string>
     <string name="toner_label">Toner:</string>
     <string name="toner_info">Datos de Toner</string>
     <string name="serial_label">Serial del Toner:</string>
@@ -73,6 +73,8 @@
     <string name="no_label">No</string>
     <string name="solution_label">Solución:</string>
     <string name="receptor_label">Recibido por:</string>
+    <string name="modelo_cartucho_label">Modelo del Cartucho:</string>
+    <string name="serial_cartucho_label">Serial del cartucho:</string>
 
 
 </resources>

@@ -3,6 +3,8 @@ package com.ucab.servimovil;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 //import net.sourceforge.zbar.*;
 
@@ -17,7 +19,8 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
 import com.ucab.servimovil.R;
-import com.ucab.servimovil.adapters.PrintModelAdapter;
+import com.ucab.servimovil.adapters.ActivoAdapter;
+import com.ucab.servimovil.adapters.ModeloTonerAdapter;
 import com.ucab.servimovil.dataAcces.*;
 import com.ucab.servimovil.model.*;
 import com.ucab.servimovil.utils.Utils;
@@ -40,6 +43,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.*;
+import android.widget.AdapterView.OnItemSelectedListener;
 
 public class PlanillaSalidaFragment extends Fragment {
 	
@@ -68,6 +72,9 @@ public class PlanillaSalidaFragment extends Fragment {
 	LocalTransaction transaction;
 	
 	long idLocalTransaction;
+	
+	Spinner modelspinner;
+	Spinner cartuchoSpinner;
 	
 /*	private Camera mCamera;
     private CameraPreview mPreview;
@@ -105,24 +112,13 @@ public class PlanillaSalidaFragment extends Fragment {
 		envio = false;
 		error = false;
 		verify = false;
-	
-		if(HTTPConnection.verificaConexion(getActivity())){
-			
-			carga = true;
-			dialogMessage = "Cargando solicitud...";
-			new HTTPRequest().execute();
-			
-		}else{
-			error = true;
-			Toast.makeText(getActivity(),"No es posible cargar la página. Verifique su conexión.",Toast.LENGTH_LONG).show();
-		}
 		
-		
+		makeThePage(null);
 		
 	} 
 	
 	
-	public String pageLoad(){
+	/*public String pageLoad(){
 		 
 		InputStream inputStream = null;
 		String result = "";
@@ -152,7 +148,7 @@ public class PlanillaSalidaFragment extends Fragment {
 		}
 		
 		return result;
-	}
+	} */
 	
 	public String verifyToner(){
 		
@@ -226,7 +222,7 @@ public class PlanillaSalidaFragment extends Fragment {
 		          	 Log.e("dialog exception","error en ring dialog " +e.toString());
 		          }
 		        if(carga){
-		        	return pageLoad();
+		        //	return pageLoad();
 		        
 		        }else if(verify){
 		        	
@@ -257,14 +253,13 @@ public class PlanillaSalidaFragment extends Fragment {
 			    		List<ModeloImpresora> listModel = JSONParser.pasePrinterModel(result);
 			    		
 			    		
-			    		
 			    		if(listModel != null && !listModel.isEmpty()){
 			    			
 			    			ModeloImpresora defaultModel = new ModeloImpresora();
 			    			defaultModel.setIdModelo(0);
 			    			defaultModel.setDescripcion(getActivity().getResources().getString(R.string.spinner_default));
-			    			listModel.add(0,defaultModel);
-			    			makeThePage(listModel);
+			    			listModel.add(0,defaultModel); 
+			    			makeThePage(listModel); 
 			    			carga = false;
 			    			
 			    		}else{
@@ -272,14 +267,15 @@ public class PlanillaSalidaFragment extends Fragment {
 				    		error = true;
 				    		envio = false;
 		    				verify = false;
-			    		}
+			    		} 
 		    		
 		    		}else if(verify){
 		    			
 		    			if(!result.equals("") && !result.equals("error")){
 		    			   if(!result.equals("null")){
 		    			       Toner tonerGet = JSONParser.parseToner(result);
-		    			       
+		    			       String modelTonerSelected = cartuchoSpinner.getSelectedItem().toString();
+		    			       		    			       
 		    			       if(!tonerGet.getStatus().equals(getActivity().getResources().getString(R.string.toner_status_inventario))){
 		    			    	  
 		    			    	   Utils.alertMessage("No es posible asignar el cartucho a la solicitud. El estado actual del cartucho es de "+ tonerGet.getStatus(),getActivity());
@@ -287,7 +283,16 @@ public class PlanillaSalidaFragment extends Fragment {
 			    				   verify = false;
 		    			    	   EditText tonerText = (EditText) getView().findViewById(R.id.tonerEditText);
 			    				   tonerText.setText("");
-		    			       }else{
+		    			       }else if(!tonerGet.getModeloToner().getDescripcion().equals(modelTonerSelected)){
+		    			    	   
+		    			    	   Utils.alertMessage("No es posible asignar el cartucho a la solicitud. El modelo seleccionado para la impresora no coincide con el modelo del cartucho ("+tonerGet.getModeloToner().getDescripcion()+")",getActivity());
+		    			    	   envio = false;
+			    				   verify = false;
+		    			    	   EditText tonerText = (EditText) getView().findViewById(R.id.tonerEditText);
+			    				   tonerText.setText(""); 
+		    			       }
+		    			       else{
+		    			       
 		    			    	   setSerialToText();
 		    			    	   toner = tonerGet;
 		    			    	   
@@ -384,20 +389,39 @@ public class PlanillaSalidaFragment extends Fragment {
 	        scanner = new ImageScanner();
 	        scanner.setConfig(0, Config.X_DENSITY, 3);
 	        scanner.setConfig(0, Config.Y_DENSITY, 3); */
+			 reporteService = new ReporteService();
+		        reporteService = (ReporteService) getArguments().getSerializable("reporte");
+		        
+			    descripcion = reporteService.getDescripcion();
+				dependencia = reporteService.getDependencia();
+				dependenciaDescripcion = reporteService.getDependenciaDescripcion();
+				solicitante = reporteService.getSolicitante();
+				reporte = String.valueOf(reporteService.getIdReporte());
+				
+			    SimpleDateFormat  format = new SimpleDateFormat("dd-MM-yyyy"); 
+				fecha = format.format(reporteService.getFechaSolicitud());
+				deptid = reporteService.getDeptId();
+				
+				List<Activo> listActivos = new ArrayList<Activo>();
+				
+				 if(reporteService.getActivos().size() > 1){
+						Activo defaultActivo = new Activo();
+						defaultActivo.setRealId(0);
+						defaultActivo.setNombre("SELECCIONE");
+						defaultActivo.setModelString("SELECCIONE");
+						listActivos.add(defaultActivo);
+				}
+				
+				 for(int actNumber=0;actNumber<reporteService.getActivos().size();actNumber++){
+					 
+					 Activo activo = reporteService.getActivos().get(actNumber);
+					// activo.setIdTransaccion(idLocalTransaction);
+					 activo.setIdDependencia(deptid);
+					 
+					 listActivos.add(activo);
+					 					 
+				 }
 	        
-	        reporteService = new ReporteService();
-	        reporteService = (ReporteService) getArguments().getSerializable("reporte");
-	        
-		    descripcion = reporteService.getDescripcion();
-			dependencia = reporteService.getDependencia();
-			dependenciaDescripcion = reporteService.getDependenciaDescripcion();
-			solicitante = reporteService.getSolicitante();
-			reporte = String.valueOf(reporteService.getIdReporte());
-			
-		    SimpleDateFormat  format = new SimpleDateFormat("dd-MM-yyyy"); 
-			fecha = format.format(reporteService.getFechaSolicitud());
-			deptid = reporteService.getDeptId();
-			
 			
 			EditText dependenciaText = (EditText) getView().findViewById(R.id.dependenciaEditText);
 			dependenciaText.setText(dependencia);
@@ -417,11 +441,35 @@ public class PlanillaSalidaFragment extends Fragment {
 			EditText fechaText = (EditText) getView().findViewById(R.id.fechaEditText);
 			fechaText.setText(fecha);
 			
-			Spinner modelspinner = (Spinner) getView().findViewById(R.id.modelPrinterList);			
-			PrintModelAdapter modelAdapter = new PrintModelAdapter(getActivity(),
-					android.R.layout.simple_spinner_item,listModel);		
-			modelAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);		
-			modelspinner.setAdapter(modelAdapter); 
+			cartuchoSpinner = (Spinner) getView().findViewById(R.id.cartuchoList);
+			
+			modelspinner = (Spinner) getView().findViewById(R.id.modelPrinterList);			
+			ActivoAdapter activoAdapter = new ActivoAdapter(getActivity(),
+					android.R.layout.simple_spinner_item,listActivos);		
+			activoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);		
+			modelspinner.setAdapter(activoAdapter); 
+			
+			modelspinner.setOnItemSelectedListener(new OnItemSelectedListener(){
+				@Override
+	            public void onItemSelected(AdapterView<?> arg0, View arg1,
+	                    int arg2, long arg3) {
+					 Activo activoSelected = (Activo) modelspinner.getSelectedItem();  
+					 String modelString = activoSelected.getModelString();
+					 
+					 String cartuchos[] = modelString.split("/");
+					 
+					 List<String> modelosString = new ArrayList<String>(Arrays.asList(cartuchos));
+					 
+					 ModeloTonerAdapter cartuchoAdapter = new ModeloTonerAdapter(getActivity(),
+								android.R.layout.simple_spinner_item,modelosString);
+					 cartuchoSpinner.setAdapter(cartuchoAdapter);
+	            }
+
+	            @Override
+	            public void onNothingSelected(AdapterView<?> arg0) {
+	                // TODO Auto-generated method stub
+	            }
+			});
 			
 			Button scanButton = (Button) getView().findViewById(R.id.salidaScanButton);
 			Button registerButton = (Button) getView().findViewById(R.id.salidaRegisterButton);
@@ -541,6 +589,7 @@ public class PlanillaSalidaFragment extends Fragment {
 	   public void verifySerialToner(String serial){
 		   
 		    tonerSerial = serial;
+		    
 		    if(HTTPConnection.verificaConexion(getActivity())){
 		    	if(!verify || !envio)
 		    	{
@@ -572,15 +621,20 @@ public class PlanillaSalidaFragment extends Fragment {
 		   String result = "";
 		   
 		   try{
+			   
+			 Spinner modelspinner = (Spinner) getView().findViewById(R.id.modelPrinterList);
+			 Activo active = (Activo) modelspinner.getSelectedItem();  
 			   			
 			 String jsonString = "[{\"TONER\":{\"ID_TONER\":"+toner.getIdToner()+"," +
 			 		"\"ID_MODELO_IMPRESORA\":"+toner.getModeloImpresora()+"}," +
+			          "\"ID_ACTIVO\":"+active.getRealId()+",\"ACTIVO_FIJO\":{\"ID_ACTIVO\":"+active.getRealId()+",\"SERIAL\":\""+active.getSerial()+"\"," +
+			          "\"NUMERO\":\""+active.getNumero()+"\",\"ID_DEPENDENCIA\":"+active.getIdDependencia()+",\"CONTADOR\":0}," +
 			 		"\"REPORTE\":{\"ID_REPORTE\":"+reporte+",\"DESCRIPCION\":\""+descripcion+"\"," +
 			 		"\"FECHA_SOLICITUD\":\""+fecha+"\"," +
 			 		"\"SOLICITANTE\":\""+solicitante+"\",\"DEPENDENCIA\":{\"DESCRIPCION\":\""+dependencia+"\",\"ID_DEPENDENCIA\":"+deptid+"}},\"TIPO_TRANSACCION\":\"S\"," +
 			 	    "\"ID_USUARIO\":"+User.actualUser+",\"OBSERVACIONES\":\""+observaciones+"\"," +
 			 	    "\"ID_TONER\":"+toner.getIdToner()+",\"STATUS\":\"ACTIVE\"}]";
-
+			 
 			
 			    HttpParams httpParams = new BasicHttpParams();
 	            HttpConnectionParams.setConnectionTimeout(httpParams,HTTPConnection.TIME_OUT_CONNECTION);
@@ -619,26 +673,26 @@ public class PlanillaSalidaFragment extends Fragment {
 			 
 			 Spinner modelspinner = (Spinner) getView().findViewById(R.id.modelPrinterList);
 			 
-			 ModeloImpresora modelPrinter = (ModeloImpresora) modelspinner.getSelectedItem();
+			 Activo active = (Activo) modelspinner.getSelectedItem();
 			
-			 if(modelPrinter.getIdModelo() != 0){
+			 if(active.getRealId() != 0){
 								 
 				 if(serial != null && !serial.equals("")){
 			 
 					 if(toner != null && envio && !verify){
-					     toner.setModeloImpresora(modelPrinter.getIdModelo());
+					     toner.setModeloImpresora(active.getRealId());
 					     
 						 
 						 try{
-							 //TODO VALIDAR QUE SE INSERTTE TRANSACCION Y ACTIVOS
+							 //TODO VALIDAR QUE SE INSERTE TRANSACCION Y ACTIVOS
 							 
 							 LocalTransaction localTrans = new LocalTransaction();
 							 localTrans.setDependencia(dependencia);
-							 localTrans.setIdImpresora(modelPrinter.getIdModelo());
+							 localTrans.setIdImpresora(active.getRealId());
 							 localTrans.setIdReporte(Long.parseLong(reporte));
 							 localTrans.setIdToner(toner.getIdToner());
 							 localTrans.setIdUsuario(User.actualUser);
-							 localTrans.setModeloImpresora(modelPrinter.getDescripcion());
+							 localTrans.setModeloImpresora(active.getNombre());
 							 
 							 try{
 							     localTrans.setModeloToner(toner.getModeloToner().getDescripcion());
@@ -657,16 +711,16 @@ public class PlanillaSalidaFragment extends Fragment {
 							 TransaccionDA transDa = new TransaccionDA();
 							 idLocalTransaction = transDa.insertTransaccion(localTrans,getActivity());
 						     
-							 for(int actNumber=0;actNumber<reporteService.getActivos().size();actNumber++){
+						//	 for(int actNumber=0;actNumber<reporteService.getActivos().size();actNumber++){
 								 
-								 Activo activo = reporteService.getActivos().get(actNumber);
-								 activo.setIdTransaccion(idLocalTransaction);
-								 activo.setIdDependencia(deptid);
+						//		 Activo activo = reporteService.getActivos().get(actNumber);
+								 active.setIdTransaccion(idLocalTransaction);
+								 active.setIdDependencia(deptid);
 								 
 								 ActivoDA activoDa = new ActivoDA();
-								 activoDa.insertActivo(activo,getActivity());
+								 activoDa.insertActivo(active,getActivity());
 								 
-							 }
+						//	 }
 							 
 							 transaction = localTrans;
 							 transaction.setIdTransaccion(idLocalTransaction);
@@ -675,7 +729,8 @@ public class PlanillaSalidaFragment extends Fragment {
 								 dialogMessage="Procesando registro...";
 						         new HTTPRequest().execute();
 							 }else{
-								 Toast.makeText(getActivity(),"No es posible conectar a internet. Verifique su conexión.",Toast.LENGTH_LONG).show();verifySerialToner(tonerSerial);
+								 Toast.makeText(getActivity(),"No es posible conectar a internet. Verifique su conexión.",Toast.LENGTH_LONG).show();
+								 verifySerialToner(tonerSerial);
 								 envio = false;
 			    				 verify = false;
 							 }

@@ -292,7 +292,8 @@ public class EntregaTonerFragment extends Fragment {
     
              if(contador == null || contador.equals("")){
         		
-        		message = message + "Contador actual.\n";
+        		//message = message + "Contador actual.\n";
+            	 contador = "0";
         	}
              
              if(receptor == null || receptor.equals("")){
@@ -310,7 +311,9 @@ public class EntregaTonerFragment extends Fragment {
         		try{
         			
         			int contadorNumber = Integer.parseInt(contador);
-        			if(contadorNumber >= activoSelected.getContador())
+        			//if(contadorNumber >= activoSelected.getContador())
+        			//{
+        			if(contadorNumber >= 0)
         			{
 	        					
 				            if(mBitmap == null)

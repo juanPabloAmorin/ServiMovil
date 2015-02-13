@@ -103,9 +103,10 @@ public class OptionsActivity extends FragmentActivity implements ActionBar.TabLi
 		actionBar.setTitle(tituloSec);
 		
 		TransaccionDA transactionda = new TransaccionDA();
-		int count = transactionda.getLocalTransactionCount(this);
+		int count = 0;
+			count =	transactionda.getLocalTransactionCount(this);
 		
-		if(count != 0){
+		if(count <= 0){
 			Utils.generateSyncNotification(OptionsActivity.this,String.valueOf(count));
 		}
 	
@@ -351,7 +352,6 @@ public class OptionsActivity extends FragmentActivity implements ActionBar.TabLi
 	@Override
 	public void onTabSelected(Tab tab, FragmentTransaction arg1) {
 		 viewPager.setCurrentItem(tab.getPosition());
-		
 		
 	}
 

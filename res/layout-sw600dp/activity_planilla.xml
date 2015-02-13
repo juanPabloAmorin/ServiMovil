@@ -202,7 +202,7 @@
           <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="45dp" >
+            android:layout_marginTop="30dp" >
 
             <TextView
                 android:id="@+id/textView23"
@@ -213,19 +213,19 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="normal|bold" />
 
-            <TextView
+              <TextView
                 android:id="@+id/textView22"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.2"
-                android:text="@string/toner_label"
+                android:layout_weight="1"
+                android:text="@string/modelo_cartucho_label"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:layout_marginLeft="10dp"
-                android:textStyle="normal|bold" />
+                android:textStyle="normal|bold" />   
 
         </LinearLayout>
         
-           <LinearLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 
@@ -233,8 +233,41 @@
                    android:id="@+id/modelPrinterList"
                    android:layout_width="0dp"
                    android:layout_height="wrap_content"
-                   android:layout_weight="4"
+                   android:layout_weight="1"
                    android:textSize="14sp" />
+
+                <Spinner
+                   android:id="@+id/cartuchoList"
+                   android:layout_width="0dp"
+                   android:layout_height="wrap_content"
+                   android:layout_weight="1"
+                   android:textSize="14sp" />
+           
+
+        </LinearLayout>
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" >
+
+              <TextView
+                android:id="@+id/textView50"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/serial_cartucho_label"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+             
+                android:textStyle="normal|bold" />   
+
+        </LinearLayout>
+        
+          <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+          
 
             <EditText
                 android:id="@+id/tonerEditText"

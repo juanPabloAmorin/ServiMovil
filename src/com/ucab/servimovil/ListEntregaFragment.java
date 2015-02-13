@@ -23,6 +23,8 @@ import com.ucab.servimovil.model.User;
 
 public class ListEntregaFragment extends Fragment  {
 	
+	ListView listOpciones;
+	
 	@Override
     public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_entrega_list, container, false);
@@ -38,7 +40,7 @@ public class ListEntregaFragment extends Fragment  {
 			);
     	
     	TextView title = (TextView) getView().findViewById(R.id.entregaTitle);
-    	ListView listOpciones = (ListView) getView().findViewById(R.id.listEntrega);
+    	listOpciones = (ListView) getView().findViewById(R.id.listEntrega);
     	
     	TransaccionDA transDa = new TransaccionDA();
     	List<LocalTransaction> listTransaction =  new ArrayList<LocalTransaction>();
@@ -75,6 +77,8 @@ public class ListEntregaFragment extends Fragment  {
 			    FragmentTransaction transaction = getFragmentManager().beginTransaction();
 			    transaction.replace(R.id.entregasLayout, entregaTonerFragment);
 				transaction.commit();
+				
+				listOpciones.setOnItemClickListener(null);
 			 
 			}
     	   

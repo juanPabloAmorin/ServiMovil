@@ -206,6 +206,7 @@ public class JSONParser {
 		    					  activo.setRealId(activoObject.getLong("idActivo"));
 		    				      activo.setNombre(activoObject.getString("nombre"));
 		    				      activo.setContador(activoObject.getInt("contador"));
+		    				      activo.setModelString(activoObject.getString("modelString"));
 		    					 
 		    					  try{
 		    					      activo.setNumero(activoObject.getString("numero"));

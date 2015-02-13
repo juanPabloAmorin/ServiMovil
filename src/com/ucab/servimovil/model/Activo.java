@@ -14,6 +14,7 @@ public class Activo implements Serializable {
 	private String numero;
 	private String nombre;
 	private int contador;
+	private String modelString;
 	
 	public long getIdActivo() {
 		return idActivo;
@@ -63,6 +64,13 @@ public class Activo implements Serializable {
 	}
 	public void setIdDependencia(long idDependencia) {
 		this.idDependencia = idDependencia;
+	}
+	
+	public String getModelString() {
+		return modelString;
+	}
+	public void setModelString(String modelString) {
+		this.modelString = modelString;
 	}
 	@Override
 	public String toString() {

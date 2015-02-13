@@ -99,6 +99,7 @@ public class SalidaFragment extends Fragment {
 		InputStream inputStream = null;
 		String result = "";
 		List<ReporteService> report = null;
+		
 	
 		try{
 			HttpParams httpParams = new BasicHttpParams();
@@ -113,9 +114,12 @@ public class SalidaFragment extends Fragment {
             
 		    if(inputStream != null){
 		    	result = Utils.convertInputStreamToString(inputStream);
-		    
+		    	
+		    	//Log.e("resultado",result);
+		    			    
 				try{
 					report = JSONParser.parseReporteService(result);
+					
 		
 				    httpclient = new DefaultHttpClient(httpParams);
 					httpGet = new HttpGet(Syncronizer.server+"/api/AOTransactions");
@@ -127,7 +131,8 @@ public class SalidaFragment extends Fragment {
 			         if(inputStream != null)
 			         {
 			        	 
-			              result = Utils.convertInputStreamToString(inputStream);	 
+			              result = Utils.convertInputStreamToString(inputStream);	
+			             
 			              	            
 			              List<Transaccion> listTransaction = JSONParser.parseTransaccion(result);
 			              

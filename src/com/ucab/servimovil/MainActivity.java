@@ -102,20 +102,23 @@ public class MainActivity extends Activity {
 	            HttpConnectionParams.setConnectionTimeout(httpParams,HTTPConnection.TIME_OUT_CONNECTION);
 	            HttpConnectionParams.setSoTimeout(httpParams,HTTPConnection.TIME_OUT_SOCKET);
 	            HttpClient httpclient = new DefaultHttpClient(httpParams);
-	            HttpGet httpGet = new HttpGet("http://200.2.15.197/ucabandroidestu/AutLDAP?user="+usuario+"&pass="+pass);
+	            HttpGet httpGet = new HttpGet("http://appsdev.ucab.edu.ve/ucabandroidestu/AutLDAP?user="+usuario+"&pass="+pass);
 	            httpGet.setHeader("charset","utf-8");
 	            HttpResponse httpResponse = httpclient.execute(httpGet);
 	            inputStream = httpResponse.getEntity().getContent();
+	            
+	            
 	            if(inputStream != null)
 	            {
 	            	 String resultado = Utils.convertInputStreamToString(inputStream);
+	            	 	            	 
 	            	 LDAPObject ldapObject = JSONParser.parseLdapObject(resultado);
 	            	 if(ldapObject != null){
 	            		 this.ldapObject = ldapObject;
 	            		 if(ldapObject.getResult().equals("true")){
 
 	            			 //TODO temporal
-	            			// usuario = "erpena";
+	            			 //usuario = "jbautist";
 		    	
 	            			 try{
 						    	      httpclient = new DefaultHttpClient(httpParams);
@@ -211,10 +214,10 @@ public class MainActivity extends Activity {
 								    	
 	            		 }else{
 	            			 result = "NO1";
-	            		 }
+	            		 } 
 	            	 }else{
 	            		 result = "error";
-	            	 }
+	            	 } 
 	            }else{
 	            	result = "error";
 	            }
